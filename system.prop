@@ -1,7 +1,7 @@
 # Audio
-voice.playback.conc.disabled=true
-voice.record.conc.disabled=true
-voice.voip.conc.disabled=true
+voice.playback.conc.disabled=false
+voice.record.conc.disabled=false
+voice.voip.conc.disabled=false
 
 # Display
 ro.sf.lcd_density=480
