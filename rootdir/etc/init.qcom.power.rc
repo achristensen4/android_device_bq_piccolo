@@ -1,11 +1,11 @@
 on enable-low-power
 
-    write /proc/sys/kernel/sched_boost 1
+    write /proc/sys/kernel/sched_boost 0
 
     write /sys/class/net/rmnet0/queues/rx-0/rps_cpus 10
 
     # Enable adaptive LMK and set vmpressure_file_min
-    write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 1
+    write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 0
     write /sys/module/lowmemorykiller/parameters/vmpressure_file_min 53059
 
     # HMP scheduler settings
@@ -17,10 +17,10 @@ on enable-low-power
     write /proc/sys/kernel/sched_mostly_idle_load 30
     write /proc/sys/kernel/sched_mostly_idle_nr_run 3
 
-    write /sys/class/devfreq/qcom,mincpubw.65/governor "cpufreq"
-    write /sys/class/devfreq/qcom,cpubw.64/governor "bw_hwmon"
+    write /sys/class/devfreq/qcom,mincpubw.65/governor "powersave"
+    write /sys/class/devfreq/qcom,cpubw.64/governor "powersave"
     write /sys/class/devfreq/qcom,cpubw.64/bw_hwmon/io_percent 20
-    write /sys/class/devfreq/qcom,gpubw.61/governor "bw_hwmon"
+    write /sys/class/devfreq/qcom,gpubw.61/governor "powersave"
     write /sys/class/devfreq/qcom,gpubw.61/bw_hwmon/io_percent 40
 
     # Disable thermal core_control to update interactive gov settings
@@ -28,7 +28,7 @@ on enable-low-power
 
     # Enable governor for perf cluster
     write /sys/devices/system/cpu/cpu0/online 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "powersave"
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "20000 1113600:50000"
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 85
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
@@ -40,7 +40,7 @@ on enable-low-power
 
     # Enable governor for power cluster
     write /sys/devices/system/cpu/cpu4/online 1
-    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "interactive"
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "powersave"
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "25000 800000:50000"
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 90
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 40000
@@ -95,4 +95,4 @@ on property:init.svc.recovery=running
     trigger enable-low-power
 
 on property:dev.bootcomplete=1
-    setprop sys.io.scheduler bfq
+    setprop sys.io.scheduler cfq
